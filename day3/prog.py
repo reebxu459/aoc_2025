@@ -1,45 +1,37 @@
-import string
-
 def get_largest_joltage_1(batteries):
     batteries = ''.join(batteries)
     first, second = '0', '0'
+
+    # first digit
     subst = batteries[:-1]
-    for num in string.digits[::-1]:
-        idx = subst.find(num)
-        if idx != -1:
-            first = idx
-            break
+    mx = max(subst)
+    idx = subst.find(mx)
+    first = idx
+
+    # second digit
     subst = batteries[idx+1:]
-    for num in string.digits[::-1]:
-        sec_idx = subst.find(num)
-        if sec_idx != -1:
-            second = sec_idx + idx + 1
-            break
+    mx = max(subst)
+    sec_idx = subst.find(mx)
+    second = sec_idx + idx + 1
+
     return batteries[first]+batteries[second]
 
 
 def get_largest_joltage_2(batteries):
     batteries = ''.join(batteries)
-    digits = list()
+    digits = []
     start = 0
     for i in range(11, -1, -1):
-        end = len(batteries)
-        if i != 0: end = 0-i
+        end = len(batteries) if i == 0 else 0-i
         subst = batteries[start:end]
-        for num in string.digits[::-1]:
-            idx = subst.find(num)
-            if idx != -1: 
-                digits.append(subst[idx])
-                start += idx+1
-                break
+        mx = max(subst)
+        idx = subst.find(mx)
+        digits.append(subst[idx])
+        start += idx+1
     return ''.join(digits)
 
-
-f = open('input.txt')
-banks = list()
-for line in f:
-    line = list(line.strip())
-    banks.append(line)
+f = open('input.txt').read().strip().split('\n')
+banks = [list(bank) for bank in f]
 
 res1 = res2 = 0
 for line in banks:
